@@ -20,7 +20,8 @@ public class LeafNode extends TreeNode {
 
     public LeafNode(IndexNode parent, double key, String value) {
         this.type = "leaf";
-        this.pairs = new ArrayList<Pair>(key, value);
+        this.pairs = new ArrayList<Pair>();
+        pairs.add(new Pair(key, value));
         this.parent = parent;
     }
 
