@@ -1,5 +1,6 @@
 package bplustree;
 
+import java.util.List;
 import java.util.ArrayList;
 import javafx.util.Pair;
 
@@ -34,28 +35,35 @@ public class LeafNode extends TreeNode {
         return null;
     }
 
-    /*  */
+    /* insert a new pair, even node will become deficient */
     public void insertPair(double key, String value) {
         for (int i = 0; i < this.pairs.size(); i++) {
-			System.out.println(this.pairs.size());
             // to handle duplicate insertion, insert the new pair on the left of the duplication
             // ------- change tie breaker here for further specification
             if (key <= this.pairs.get(i).getKey()) {
                 this.pairs.add(i, new Pair<>(key, value));
+                return;
             }
         }
+        this.pairs.add(new Pair<>(key, value));
     }
 
     /* splits the pairs into two portions, returns the middle key */
-    public double splitLeaf() {
-        ArrayList<Pair<Double, String>> sub = (ArrayList<Pair<Double, String>>)(this.pairs.subList(this.pairs.size() / 2, this.pairs.size()));
+    public IndexNode splitLeaf() {
+        List<Pair<Double, String>> sub = this.pairs.subList(this.pairs.size() / 2, this.pairs.size());
         ArrayList<Pair<Double, String>> newPair = new ArrayList<>(sub);
         sub.clear();
         LeafNode newLeaf = new LeafNode(this.parent, newPair);
         newLeaf.lSib = this;
         newLeaf.rSib = this.rSib;
         this.rSib = newLeaf;
-        return newLeaf.pairs.get(0).getKey();
+        //form a new index node with a0, a1 and k1
+        ArrayList<TreeNode> a = new ArrayList<>();
+        a.add(this);
+        a.add(newLeaf);
+        ArrayList<Double> k = new ArrayList<>();
+        k.add(newLeaf.pairs.get(0).getKey());
+        return new IndexNode(null, a, k);
     }
 
     public ArrayList<Pair<Double, String>> getPairs() {
