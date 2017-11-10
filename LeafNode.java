@@ -26,13 +26,26 @@ public class LeafNode extends TreeNode {
     }
 
     /* returns a pair value if key is found, null if fell off */
-    public String searchPair(double key) {
-        for (int i = 0; i < this.pairs.size(); i++) {
-            if (key == this.pairs.get(i).getKey()) {
-                return this.pairs.get(i).getValue();
+    public boolean searchPairs(ArrayList<Pair<Double, String>> res, double ...keys) {
+        if(keys.length == 1){
+            for (int i = 0; i < this.pairs.size(); i++) {
+                if (keys[0] == this.pairs.get(i).getKey()) {
+                    res.add(this.pairs.get(i));
+                }else{
+                    return false;
+                }
             }
+            return true;
+        }else{
+            for (int i = 0; i < this.pairs.size(); i++) {
+                if (keys[1] >= this.pairs.get(i).getKey()) {
+                    res.add(this.pairs.get(i));
+                }else{
+                    return false;
+                }
+            }
+            return true;
         }
-        return null;
     }
 
     /* insert a new pair, even node will become deficient */
@@ -74,9 +87,9 @@ public class LeafNode extends TreeNode {
     //     return this.lSib;
     // }
 
-    // public LeafNode getRSib() {
-    //     return this.rSib;
-    // }
+    public LeafNode getRSib() {
+        return this.rSib;
+    }
 
     // public void setLSib(LeafNode n) {
     //     this.lSib = n;

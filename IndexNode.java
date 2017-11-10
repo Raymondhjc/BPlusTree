@@ -8,13 +8,6 @@ public class IndexNode extends TreeNode {
 	private ArrayList<TreeNode> a;
 	private ArrayList<Double> k;
 
-	// public IndexNode(TreeNode a0, TreeNode a1TreeNode, double key) {
-	// 	this.type = "index";
-	// 	this.j = 0;
-	// 	this.a.add(a0);
-	// 	this.a.add(a1);
-	// 	this.k.add(key);
-	// }
 	public IndexNode(IndexNode parent, ArrayList<TreeNode> a, ArrayList<Double> k) {
 		this.type = "index";
 		this.parent = parent;
@@ -64,15 +57,40 @@ public class IndexNode extends TreeNode {
 		return new IndexNode(null, a, k);
 	}
 
-	public TreeNode searchIndex(double key) {
+	/* search the rightmost position for insertion or search the leftmost child which matches the key */
+	
+	public TreeNode searchIndex(double key, String match) {
 		// now linear search ------- implement binary search later
-		for (int i = 0; i < k.size(); i++) {
-			// to handle duplicate, insert the same key in the right child
-			if (key < k.get(i)) {
-				return a.get(i);
+		if ("right" == match) {
+			for (int i = 0; i < this.j; i++) {
+				if (key < this.k.get(i)) {
+					return this.a.get(i);
+				}
 			}
+			return this.a.get(this.j);
+		} else {
+			for (int i = 0; i < this.j; i++) {
+				if (this.k.get(i) >= key) {
+					TreeNode child = this.a.get(i);
+					if (child.getType() == "index") {
+						if (((IndexNode) child).getKeys().get(((IndexNode) child).getNumber() - 1) >= key) {
+							return this.a.get(i);
+						} else {
+							return this.a.get(i + 1);
+						}
+					} else {
+						if (((LeafNode) child).getPairs().get(((LeafNode) child).getPairs().size() - 1)
+								.getKey() >= key) {
+							return this.a.get(i);
+						} else {
+							return this.a.get(i + 1);
+						}
+					}
+				}
+			}
+			return a.get(this.j);
 		}
-		return a.get(k.size());
+
 	}
 
 	public int getNumber() {

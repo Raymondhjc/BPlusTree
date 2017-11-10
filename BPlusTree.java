@@ -16,7 +16,7 @@ public class BPlusTree {
 	}
 
 	public void Insert(double key, String value) {
-		TreeNode node = findLeaf(key);
+		TreeNode node = findLeaf(key, "right");
 		// ------- little redundant here for now
 		if (node == null) {
 			ArrayList<Pair<Double, String>> p = new ArrayList<>();
@@ -31,12 +31,20 @@ public class BPlusTree {
 		}
 	}
 
-	public TreeNode Search(double... keys) {
-		return null;
+	public ArrayList<Pair<Double, String>> Search(double... keys) {
+		TreeNode node = findLeaf(keys[0], "left");
+		if (node == null) {
+			return null;
+		}
+		ArrayList<Pair<Double, String>> res = new ArrayList<>();
+		while (((LeafNode) node).searchPairs(res, keys) && node != null) {
+			node = ((LeafNode) node).getRSib();
+		}
+		return res;
 	}
 
 	/* find leaf node from root */
-	public TreeNode findLeaf(double key) {
+	public TreeNode findLeaf(double key, String match) {
 		// empty tree
 		if (this.root == null) {
 			return null;
@@ -44,7 +52,7 @@ public class BPlusTree {
 		TreeNode node = this.root;
 		// if the root is a leaf, return it
 		while (node.getType() != "leaf") {
-			node = ((IndexNode) node).searchIndex(key);
+			node = ((IndexNode) node).searchIndex(key, match);
 		}
 		return node;
 	}
