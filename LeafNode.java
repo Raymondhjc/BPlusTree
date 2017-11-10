@@ -48,7 +48,7 @@ public class LeafNode extends TreeNode {
         this.pairs.add(new Pair<>(key, value));
     }
 
-    /* splits the pairs into two portions, returns the middle key */
+    /* splits the element node into two portions whose parent reference is still the old parent, returns a new index node. */
     public IndexNode splitLeaf() {
         List<Pair<Double, String>> sub = this.pairs.subList(this.pairs.size() / 2, this.pairs.size());
         ArrayList<Pair<Double, String>> newPair = new ArrayList<>(sub);

@@ -12,4 +12,8 @@ public class TreeNode{
     public IndexNode getParent(){
         return this.parent;
     }
+
+    public void setParent(IndexNode parent){
+        this.parent = parent;
+    }
 }

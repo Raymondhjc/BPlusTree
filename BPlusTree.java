@@ -26,7 +26,9 @@ public class BPlusTree {
 		}
 		// ---- decide m here
 		((LeafNode) node).insertPair(key, value);
-		this.splitNode((LeafNode) node);
+		if (((LeafNode) node).getPairs().size() == this.order) {
+			this.splitNode((LeafNode) node);
+		}
 	}
 
 	public TreeNode Search(double... keys) {
@@ -48,21 +50,24 @@ public class BPlusTree {
 	}
 
 	public void splitNode(LeafNode leaf) {
-		if (leaf.getPairs().size() == this.order) {
-			IndexNode newIndex = leaf.splitLeaf();
-			IndexNode parentIndex = leaf.getParent();
-			while (parentIndex != null) {
-				parentIndex.insertIndex(newIndex);
-				if (parentIndex.getNumber() < this.order) {
-					return;
-				}
-				// if deficient
-				newIndex = parentIndex.splitIndex();
-				parentIndex = parentIndex.getParent();
+		IndexNode newIndex = leaf.splitLeaf();
+		IndexNode parentIndex = leaf.getParent();
+		while (parentIndex != null) {
+			parentIndex.insertIndex(newIndex);
+			if (parentIndex.getNumber() < this.order) {
+				return;
 			}
-			// if reaches root
-			this.root = newIndex;
-			
+			// if deficient
+			newIndex = parentIndex.splitIndex();
+			parentIndex = parentIndex.getParent();
 		}
+		// if reaches root
+		newIndex.getAs().get(0).setParent(newIndex);
+		newIndex.getAs().get(1).setParent(newIndex);
+		this.root = newIndex;
+	}
+
+	public TreeNode getRoot() {
+		return this.root;
 	}
 }
