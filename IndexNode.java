@@ -3,16 +3,17 @@ package bplustree;
 import java.util.ArrayList;
 
 public class IndexNode extends TreeNode {
-	public int j;
-	public ArrayList<TreeNode> a;
-	public ArrayList<Double> k;
+	private int j;
+	private ArrayList<TreeNode> a;
+	private ArrayList<Double> k;
 
-	public IndexNode(TreeNode parent) {
+	public IndexNode(IndexNode parent) {
 		this.parent = parent;
 		this.type = "index";
 	}
 
 	public boolean insertIndex(double key) {
+		j++;
 		return true;
 	}
 
@@ -25,5 +26,9 @@ public class IndexNode extends TreeNode {
 			}
 		}
 		return a.get(k.size());
+	}
+
+	public int getNumber(){
+		return this.j;
 	}
 }

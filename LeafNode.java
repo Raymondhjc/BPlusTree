@@ -1,49 +1,81 @@
 package bplustree;
 
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import javafx.util.Pair;
 
 public class LeafNode extends TreeNode {
-    public class Pair {
-        double key;
-        String value;
+    // public class Pair {
+    //     double K;
+    //     String V;
 
-        public Pair(double key, String value) {
-            this.key = key;
-            this.value = value;
-        }
-    }
+    //     public Pair(double key, String value) {
+    //         this.K = key;
+    //         this.V = value;
+    //     }
+    // }
 
-    public ArrayList<Pair> pairs;
-    public LeafNode lSib;
-    public LeafNode rSib;
+    private ArrayList<Pair<Double, String>> pairs;
+    private LeafNode lSib;
+    private LeafNode rSib;
 
-    public LeafNode(IndexNode parent, double key, String value) {
+    public LeafNode(IndexNode parent, ArrayList<Pair<Double, String>> p) {
         this.type = "leaf";
-        this.pairs = new ArrayList<Pair>();
-        pairs.add(new Pair(key, value));
+        this.pairs = p;
         this.parent = parent;
     }
 
     /* returns a pair value if key is found, null if fell off */
     public String searchPair(double key) {
-        for (int i = 0; i < pairs.size(); i++) {
-            if (key == pairs.get(i).key) {
-                return pairs.get(i).value;
+        for (int i = 0; i < this.pairs.size(); i++) {
+            if (key == this.pairs.get(i).getKey()) {
+                return this.pairs.get(i).getValue();
             }
         }
         return null;
     }
 
-    /* returns a pair value if key is found, null if fell off */
+    /*  */
     public void insertPair(double key, String value) {
-        for (int i = 0; i < pairs.size(); i++) {
+        for (int i = 0; i < this.pairs.size(); i++) {
+			System.out.println(this.pairs.size());
             // to handle duplicate insertion, insert the new pair on the left of the duplication
             // ------- change tie breaker here for further specification
-            if (key <= pairs.get(i).key) {
-                pairs.add(i, new Pair(key, value));
+            if (key <= this.pairs.get(i).getKey()) {
+                this.pairs.add(i, new Pair<>(key, value));
             }
         }
     }
+
+    /* splits the pairs into two portions, returns the middle key */
+    public double splitLeaf() {
+        ArrayList<Pair<Double, String>> sub = (ArrayList<Pair<Double, String>>)(this.pairs.subList(this.pairs.size() / 2, this.pairs.size()));
+        ArrayList<Pair<Double, String>> newPair = new ArrayList<>(sub);
+        sub.clear();
+        LeafNode newLeaf = new LeafNode(this.parent, newPair);
+        newLeaf.lSib = this;
+        newLeaf.rSib = this.rSib;
+        this.rSib = newLeaf;
+        return newLeaf.pairs.get(0).getKey();
+    }
+
+    public ArrayList<Pair<Double, String>> getPairs() {
+        return this.pairs;
+    }
+
+    // public LeafNode getLSib() {
+    //     return this.lSib;
+    // }
+
+    // public LeafNode getRSib() {
+    //     return this.rSib;
+    // }
+
+    // public void setLSib(LeafNode n) {
+    //     this.lSib = n;
+    // }
+
+    // public void setRSib(LeafNode n) {
+    //     this.rSib = n;
+    // }
 
 }

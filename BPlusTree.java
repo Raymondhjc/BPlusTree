@@ -1,8 +1,11 @@
 package bplustree;
 
+import java.util.ArrayList;
+import javafx.util.Pair;
+
 public class BPlusTree {
-	public TreeNode root;
-	public int order;
+	private TreeNode root;
+	private int order;
 
 	public BPlusTree(int m) {
 		Initialize(m);
@@ -16,11 +19,14 @@ public class BPlusTree {
 		TreeNode node = findLeaf(key);
 		// ------- little redundant here for now
 		if (node == null) {
-			this.root = new LeafNode(null, key, value);
+			ArrayList<Pair<Double, String>> p = new ArrayList<>();
+			p.add(new Pair<>(key, value));
+			this.root = new LeafNode(null, p);
 			return;
 		}
 		// ---- decide m here
 		((LeafNode)node).insertPair(key, value);
+		this.splitNode((LeafNode)node);
 	}
 
 	public TreeNode Search(double... keys) {
@@ -35,9 +41,16 @@ public class BPlusTree {
 		}
 		TreeNode node = this.root;
 		// if the root is a leaf, return it
-		while (node.type != "leaf") {
+		while (node.getType() != "leaf") {
 			node = ((IndexNode) node).searchIndex(key);
 		}
 		return node;
+	}
+
+	public void splitNode(LeafNode node) {
+		if (node.getPairs().size() == this.order) {
+			double parentKey = node.splitLeaf();
+			node.getParent().insertIndex(parentKey);
+		}
 	}
 }
