@@ -37,7 +37,10 @@ public class BPlusTree {
 			return null;
 		}
 		ArrayList<Pair<Double, String>> res = new ArrayList<>();
-		while (((LeafNode) node).searchPairs(res, keys) && node != null) {
+		while (((LeafNode) node).searchPairs(res, keys)) {
+			if(((LeafNode) node).getRSib() == null){
+				break;
+			}
 			node = ((LeafNode) node).getRSib();
 		}
 		return res;

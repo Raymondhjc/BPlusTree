@@ -31,14 +31,16 @@ public class LeafNode extends TreeNode {
             for (int i = 0; i < this.pairs.size(); i++) {
                 if (keys[0] == this.pairs.get(i).getKey()) {
                     res.add(this.pairs.get(i));
-                }else{
+                }else if(keys[0] < this.pairs.get(i).getKey()){
                     return false;
                 }
             }
             return true;
         }else{
             for (int i = 0; i < this.pairs.size(); i++) {
-                if (keys[1] >= this.pairs.get(i).getKey()) {
+                if(keys[0] > this.pairs.get(i).getKey()){
+                    continue;
+                }else if (keys[1] >= this.pairs.get(i).getKey()) {
                     res.add(this.pairs.get(i));
                 }else{
                     return false;
