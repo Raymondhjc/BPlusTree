@@ -5,16 +5,6 @@ import java.util.ArrayList;
 import javafx.util.Pair;
 
 public class LeafNode extends TreeNode {
-    // public class Pair {
-    //     double K;
-    //     String V;
-
-    //     public Pair(double key, String value) {
-    //         this.K = key;
-    //         this.V = value;
-    //     }
-    // }
-
     private ArrayList<Pair<Double, String>> pairs;
     private LeafNode lSib;
     private LeafNode rSib;
@@ -25,7 +15,7 @@ public class LeafNode extends TreeNode {
         this.parent = parent;
     }
 
-    /* returns a pair value if key is found, null if fell off */
+    /* specific search or range search an element node, returns a pair value if key is found, null if fell off */
     public boolean searchPairs(ArrayList<Pair<Double, String>> res, double ...keys) {
         if(keys.length == 1){
             for (int i = 0; i < this.pairs.size(); i++) {
@@ -50,7 +40,7 @@ public class LeafNode extends TreeNode {
         }
     }
 
-    /* insert a new pair, even node will become deficient */
+    /* insert a new pair. If node become deficient, insert anyway */
     public void insertPair(double key, String value) {
         for (int i = 0; i < this.pairs.size(); i++) {
             // to handle duplicate insertion, insert the new pair on the left of the duplication
@@ -85,20 +75,7 @@ public class LeafNode extends TreeNode {
         return this.pairs;
     }
 
-    // public LeafNode getLSib() {
-    //     return this.lSib;
-    // }
-
     public LeafNode getRSib() {
         return this.rSib;
     }
-
-    // public void setLSib(LeafNode n) {
-    //     this.lSib = n;
-    // }
-
-    // public void setRSib(LeafNode n) {
-    //     this.rSib = n;
-    // }
-
 }

@@ -47,6 +47,7 @@ public class BPlusTreeTest {
 
     }
 
+    /* visualize the whole tree in console， (not called) */
     public static void visualize(TreeNode node) {
         if (node.getType() == "leaf") {
             for (int i = 0; i < ((LeafNode) node).getPairs().size(); i++) {
@@ -67,6 +68,7 @@ public class BPlusTreeTest {
         }
     }
 
+    /* read and write the files */
     public static void operateFile(String fileName) {
         File inFile = new File(fileName);
         File outFile = new File("bplustree/output_file.txt");

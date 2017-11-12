@@ -34,6 +34,7 @@ public class IndexNode extends TreeNode {
 		this.a.add(node.getAs().get(1));
 	}
 
+	/* split a index node into 2 children, make the middle index as parent, return the parent index node */
 	public IndexNode splitIndex() {
 		List<TreeNode> aSub = this.a.subList((j + 1) / 2, this.a.size());
 		List<Double> kSub = this.k.subList(j / 2 + 1, this.k.size());
@@ -58,7 +59,6 @@ public class IndexNode extends TreeNode {
 	}
 
 	/* search the rightmost position for insertion or search the leftmost child which matches the key */
-	
 	public TreeNode searchIndex(double key, String match) {
 		// now linear search ------- implement binary search later
 		if ("right" == match) {

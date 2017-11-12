@@ -17,15 +17,14 @@ public class BPlusTree {
 
 	public void Insert(double key, String value) {
 		TreeNode node = findLeaf(key, "right");
-		// ------- little redundant here for now
 		if (node == null) {
 			ArrayList<Pair<Double, String>> p = new ArrayList<>();
 			p.add(new Pair<>(key, value));
 			this.root = new LeafNode(null, p);
 			return;
 		}
-		// ---- decide m here
 		((LeafNode) node).insertPair(key, value);
+		// decide if the node become deficient
 		if (((LeafNode) node).getPairs().size() == this.order) {
 			this.splitNode((LeafNode) node);
 		}
