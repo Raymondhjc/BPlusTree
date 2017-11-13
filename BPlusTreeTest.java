@@ -14,7 +14,6 @@ public class BPlusTreeTest {
 
     public static void main(String[] args) {
         operateFile("bplustree/input_file.txt");
-        //visualize(tree.getRoot());
 
     }
     // public static void printResult(ArrayList<Pair<Double, String>> res) {
@@ -47,7 +46,7 @@ public class BPlusTreeTest {
 
     }
 
-    /* visualize the whole tree in console， (not called) */
+    /* visualize the whole tree in console (not called) */
     public static void visualize(TreeNode node) {
         if (node.getType() == "leaf") {
             for (int i = 0; i < ((LeafNode) node).getPairs().size(); i++) {
@@ -91,6 +90,8 @@ public class BPlusTreeTest {
                     if (in.length == 2) {
                         printResult(writer, tree.Search(Double.parseDouble(in[1])), "single");
                     } else {
+                        if(Double.parseDouble(in[1]) == -3.91)
+                         visualize(tree.getRoot());
                         printResult(writer, tree.Search(Double.parseDouble(in[1]), Double.parseDouble(in[2])), "range");
                     }
                     writer.newLine();

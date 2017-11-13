@@ -37,7 +37,7 @@ public class IndexNode extends TreeNode {
 	/* split a index node into 2 children, make the middle index as parent, return the parent index node */
 	public IndexNode splitIndex() {
 		List<TreeNode> aSub = this.a.subList((j + 1) / 2, this.a.size());
-		List<Double> kSub = this.k.subList(j / 2 + 1, this.k.size());
+		List<Double> kSub = this.k.subList((j + 1) / 2, this.k.size());
 		ArrayList<TreeNode> newA = new ArrayList<>(aSub);
 		ArrayList<Double> newK = new ArrayList<>(kSub);
 		aSub.clear();
@@ -70,22 +70,24 @@ public class IndexNode extends TreeNode {
 			return this.a.get(this.j);
 		} else {
 			for (int i = 0; i < this.j; i++) {
-				if (this.k.get(i) >= key) {
+				if (this.k.get(i) == key) {
 					TreeNode child = this.a.get(i);
 					if (child.getType() == "index") {
-						if (((IndexNode) child).getKeys().get(((IndexNode) child).getNumber() - 1) >= key) {
+						if (((IndexNode) child).getKeys().get(((IndexNode) child).getNumber() - 1) == key) {
 							return this.a.get(i);
 						} else {
 							return this.a.get(i + 1);
 						}
 					} else {
 						if (((LeafNode) child).getPairs().get(((LeafNode) child).getPairs().size() - 1)
-								.getKey() >= key) {
+								.getKey() == key) {
 							return this.a.get(i);
 						} else {
 							return this.a.get(i + 1);
 						}
 					}
+				}else if(this.k.get(i) > key){
+					return this.a.get(i);
 				}
 			}
 			return a.get(this.j);
